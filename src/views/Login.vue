@@ -39,7 +39,7 @@ export default {
         this.hide=false;
       }
     },
-    login() {
+    login(){
       firebase
         .auth()
         .signInWithEmailAndPassword(this.name, this.password)
@@ -118,7 +118,8 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url("./../assets/realmadrid.jpg") no-repeat;
+  /*background: url("./../assets/realmadrid.jpg") no-repeat; */
+  background-color: rgb(242, 242, 242);
   background-size: 100% 100%;
 }
 .login {
