@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import signIn from '../views/signIn.vue'
-import home from '../views/home.vue'
+// import home from '../views/home.vue'
 import logout from '../views/logout'
 import layout from '../Nav/layout'
 import first from '../Nav/first';
@@ -10,6 +10,7 @@ import second from '../Nav/second';
 import third from '../Nav/third';
 import four from '../Nav/four'
 
+import home from '../views/home2.vue'
 Vue.use(VueRouter)
 
 const routes = [

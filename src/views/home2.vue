@@ -3,7 +3,7 @@
         <fieldset class="main">
             <legend class="title">Table</legend>            
         <input type="button" value="+" class="add" @click="addRow()"/>
-            <el-table style="width: 90%" border :data="tableData">
+            <!-- <el-table style="width: 90%" border :data="tableData">
                 <el-table-column label="Roll No" prop="roll_no">
                     <template slot-scope="scope">
                         <div>{{scope.row.roll_no}}</div>
@@ -19,7 +19,34 @@
                         <el-button type="danger" size="mini" @click="handleDelete(scope.$index,scope.row)">Delete</el-button>
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table> -->
+            <table>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Phone No</th>
+                    <th>Address</th>
+                    <th>Operations</th>
+                </tr>
+                <tr v-for="(username, key) in tableData" :key="key">
+                    <td>{{username.roll_no}}</td>
+                    <td>{{username.name}}</td>
+                    <td>{{username.age}}</td>
+                    <td>{{username.ph_no}}</td>
+                    <td>{{username.address}}</td>
+                    <td>
+                        <el-button style="height:25px" type="primary" size="mini" @click="handleEdit(index, tableData)">Edit</el-button>
+                        <el-button style="height:25px" type="danger" size="mini" @click="handledelete(key)">Delete</el-button>                       
+                    </td>
+                    <!-- <td>
+                        <template slot-scope="scope">
+                            <el-button style="height:25px" type="primary" size="mini" @click="handleEdit(scope.$index, tableData)">Edit</el-button>
+                            <el-button style="height:25px" type="danger" size="mini" @click="handledelete(item)">Delete</el-button>   
+                        </template>
+                    </td> -->
+                </tr>
+            </table>
         </fieldset>
 
         <!-- add Dialog -->
@@ -196,13 +223,13 @@ export default {
             this.editRuleForm.editPhone = "";
             this.editRuleForm.editAddress = ""
         },
-        handleDelete(index,row){
+        handleDelete(key){
             this.$confirm("Are you sure to delete this item?", "Warning",{
                 confirmButtonText: "OK",
                 cancelButtonText: "Cancel",
                 type:"warning"
             }).then(() =>{
-                firebase.database().ref("tableData/" + row).remove();
+                firebase.database().ref("tableData/" + key).remove();
             })
         },
        
@@ -254,9 +281,19 @@ export default {
 .cont{
     position: relative;
 }
-.el-table{
-    border: 1px solid green;
-    margin: 1% 5%;
+table, th{
+    border-collapse: collapse;
+    border: 2px solid green;
+    margin: 1% 9%;
+    width: 80%;
+}
+th{
+    width: 10%;
+    height: 35px;
+}
+td {
+ border: 1px solid gray; 
+ height: 30px;  
 }
 .main{
     border: 3px solid green;

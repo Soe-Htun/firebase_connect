@@ -5,19 +5,40 @@
       <el-input type="password" id="password" v-model="password" placeholder="Password"></el-input>
       <br />
       <span @click="show_hide()">
-        <i v-if="hide" class="far fa-eye-slash"></i>
-        <i v-if="show" class="fas fa-eye"></i>
+        <i id="view" v-if="hide" class="far fa-eye-slash"></i>
+        <i id="view" v-if="show" class="fas fa-eye"></i>
       </span>
       <el-button id="btn" type="primary" @click="login">Login(Ent)</el-button>
       <el-button type="primary" @click="Sign_up()" id="sign">Register(↑)</el-button>
     </div>
+
+    <div class="footer">
+      <el-button type="primary" style="width:120px" @click="facebookLogin()">
+        <i class="fab fa-facebook-f" style="margin-right:10px"></i>
+         Facebook
+      </el-button>
+      <el-button type="success" style="width:120px" @click="googleSign()">
+        <i class="fab fa-google" style="margin-right:10px"></i>
+        Google
+      </el-button>
+    </div>
+    <facebook-login class="button"
+      appId="326022817735322"
+      @login="getUserData"
+      @logout="onLogout"
+      @get-initial-status="getUserData">
+    </facebook-login>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
+import facebookLogin from 'facebook-login-vuejs';
 export default {
   name: "Login",
+  components:{
+    facebookLogin
+  },
   data() {
     return {
       name: "",
@@ -67,6 +88,68 @@ export default {
       else if(e.keyCode === 13){
         this.login();
       }
+    },
+    googleSign(){
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+      // firebase.auth().languageCode = 'pt';
+      // provider.setCustomParameters({
+      //   'login_hint': 'user@example.com'
+      // });
+
+      firebase.auth().signInWithPopup(provider).then(function(result) {
+        var token = result.credential.accessToken;
+        var user = result.user;
+        this.$router.push('/');
+        console.log(token,user);
+        
+      }).catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
+        console.log(errorMessage,errorCode,email,credential);
+        
+      });
+    },
+    facebookLogin(){
+      var provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('user_birthday');
+      firebase.auth().signInWithPopup(provider).then(function(result) {
+      var token = result.credential.accessToken;
+      var user = result.user;
+      this.$$router.push('/')
+      console.log(token,user);
+      }).catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
+        console.log(errorMessage,errorCode,email,credential);
+      });
+    },
+
+    getUserData(){
+      this.FB.api('/me', 'GET', {fields: 'id,name,email'},
+        userInformation =>{
+          console.warn("get data from fb", userInformation)
+          this.personalID = userInformation.id;
+          this.email = userInformation.email;
+          this.name = userInformation.name;
+        }
+      )
+    },
+    sdkLoaded(payload){
+      this.isConnected = payload.isConnected
+      this.FB =payload.FB
+      if(this.isConnected) this.getUserData()
+    },
+    onLogin(){
+      this.isConnected = true;
+      this.getUserData()
+    },
+    onLogout(){
+      this.isConnected = false;
     }
   },
   created(){
@@ -126,7 +209,7 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -100px 0px 0px -220px;
+  margin: -100px 0px 0px -210px;
 }
 #name {
   text-indent: 20px;
@@ -151,10 +234,16 @@ export default {
   min-width: 100px;
   height: 38px;
 }
-i {
+#view {
   position: absolute;
   top: 45%;
   left: 69%;
+}
+.footer{
+  position: fixed;
+  bottom: 20%;
+  left: 50%;
+  margin: -200px 0px 0px -120px;
 }
 </style>
 

@@ -18,7 +18,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
 window.firebase=firebase;
 
 new Vue({
