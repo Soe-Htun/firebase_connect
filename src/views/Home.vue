@@ -3,23 +3,56 @@
         <fieldset class="main">
             <legend class="title">Table</legend>            
         <input type="button" value="+" class="add" @click="addRow()"/>
-            <el-table style="width: 90%" border :data="tableData">
-                <el-table-column label="Roll No" prop="roll_no">
-                    <template slot-scope="scope">
-                        <div>{{scope.row.roll_no}}</div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="Name" prop="name"></el-table-column>
-                <el-table-column label="Age" prop="age"></el-table-column>
-                <el-table-column label="Phone no" prop="ph_no"></el-table-column>
-                <el-table-column label="Address" prop="address"></el-table-column>
-                <el-table-column label="Operations">
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="handleEdit(scope.$index,tableData)">Edit</el-button>
-                        <el-button type="danger" size="mini" @click="handleDelete(scope.$index,scope.row)">Delete</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <table>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Phone No</th>
+                    <th>Address</th>
+                    <th>Operations</th>
+                </tr>
+                <tr v-for="(username, key) in tableData" :key="key">
+                    <td>{{username.roll_no}}</td>
+                    <td>{{username.name}}</td>
+                    <td>{{username.age}}</td>
+                    <td>{{username.ph_no}}</td>
+                    <td>{{username.address}}</td>
+                    <td>
+                        <el-button style="height:25px;" type="primary" size="mini" @click="handleEdit( item)">Edit</el-button>
+                        <el-button style="height:25px;" type="danger" size="mini" @click="handledelete(key)">Delete</el-button>                       
+                    </td>
+                </tr>
+            </table>
+
+
+            <div id="pagination" class="pagination">
+                <div class="col first">
+                    <p class="pagination-label">
+                        Viewing <span>1-10</span> of <span> 36 </span> 
+                    </p>
+                </div>
+                <div class="col middle">
+                    <a href="#" class="first round">&#8249;&#8249;</a>
+                    <a href="#" class="previous round">&#8249;</a>
+                    <a href="#" class="round btn-page active">1</a>
+                    <a href="#" class="round btn-page">2</a>
+                    <a href="#" class="round btn-page">3</a>
+                    <a href="#" class="round btn-page">4</a>
+                    <a href="#" class="next round">&#8250;</a>
+                    <a href="#" class="last round">&#8250;&#8250;</a>
+                </div>
+                <div class="col last">
+                    Show
+                    <select>
+                        <option value="5">5</option>
+                        <option value="10" selected> 10</option>
+                        <option value="15">15</option>
+                    </select>
+                    Rows
+                </div>
+            </div>
+
         </fieldset>
 
         <!-- add Dialog -->
@@ -72,8 +105,8 @@
                     <el-input class="addAddress" v-model="editRuleForm.addAddress" placeholder="Address"></el-input>
                 </el-form-item><br>
                 <el-form-item >
-                    <el-button type="primary" class="submit" @click="save(key)">Add</el-button>
-                    <el-button  class="submit" @click="clear()">Reset</el-button>
+                    <el-button type="primary" class="submit" @click="save(key)">Save</el-button>
+                    <el-button  class="submit" @click="clear()">Clear</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -170,9 +203,10 @@ export default {
         reset(formName){
             this.$refs[formName].resetFields()
         },
-        handleEdit(index,row){
+        handleEdit(item){
             this.editDialog =true;
-            this.Edited = row[index]
+            this.Edited = this.tableData.indexOf(item);
+            this.editRuleForm = Object.assign({}, item)
             this.editRuleForm.editRoll = this.Edited.roll_no;
             this.editRuleForm.editName = this.Edited.name;
             this.editRuleForm.editAge = this.Edited.age;
@@ -196,13 +230,13 @@ export default {
             this.editRuleForm.editPhone = "";
             this.editRuleForm.editAddress = ""
         },
-        handleDelete(index,row){
+        handledelete(key){
             this.$confirm("Are you sure to delete this item?", "Warning",{
                 confirmButtonText: "OK",
                 cancelButtonText: "Cancel",
                 type:"warning"
             }).then(() =>{
-                firebase.database().ref("tableData/" + row).remove();
+                firebase.database().ref("tableData/" + key).remove();
             })
         },
        
@@ -254,9 +288,19 @@ export default {
 .cont{
     position: relative;
 }
-.el-table{
-    border: 1px solid green;
-    margin: 1% 5%;
+table, th{
+    border-collapse: collapse;
+    border: 2px solid green;
+    margin: 1% 9%;
+    width: 80%;
+}
+th{
+    width: 10%;
+    height: 35px;
+}
+td {
+ border: 1px solid gray; 
+ height: 30px;  
 }
 .main{
     border: 3px solid green;
@@ -285,7 +329,6 @@ export default {
     margin-top: 14px;
     background-color: green;
     color: white;
-   
 }
 .el-form-item{
     margin-left: 60px;
@@ -312,4 +355,32 @@ export default {
     width: 95px;
     margin-left: 82px;
 }
+
+.pagination .col.middle{
+    display: flex;
+    justify-content: center;
+}
+.pagination .col.last{
+    text-align: right;
+    margin: 10px 0px;
+}
+.pagination p{
+    margin: 15px 0px;
+}
+.pagination a{
+    border : 1px solid #bababa;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+}
+.pagination a:hover, .pagination a.active{
+    background-color: rgb(127, 227, 245);
+}
+.pagination span{
+    font-weight: bold;
+}
+.pagination select{
+    margin: 20px 0px;
+}
+
 </style>

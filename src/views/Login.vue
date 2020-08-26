@@ -118,7 +118,7 @@ export default {
       firebase.auth().signInWithPopup(provider).then(function(result) {
       var token = result.credential.accessToken;
       var user = result.user;
-      this.$$router.push('/')
+      this.$router.push('/')
       console.log(token,user);
       }).catch(function(error) {
         var errorCode = error.code;
