@@ -205,8 +205,9 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  /*background: url("./../assets/realmadrid.jpg") no-repeat; */
-  background: linear-gradient(180deg, #8e0603d4, #000000f7), url('../assets/realmadrid.jpg');
+  /* background: url("./../assets/realmadrid.jpg") no-repeat; */
+  background: linear-gradient(90deg, #3b3b3bd4, #000000f7), url('../assets/realmadrid.jpg');
+  /* filter: brightness(0.5); */
   background-size: 100% 100%;
 }
 .login {
