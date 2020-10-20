@@ -324,7 +324,7 @@ td {
     border-radius: 22px;
     text-indent: 1px;
     padding-bottom: 10px;
-    line-height: 31px;
+    line-height: 38px;
     font-size: 32px;
     margin-top: 14px;
     background-color: green;

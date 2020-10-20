@@ -12,6 +12,7 @@
       <el-button type="primary" @click="Sign_up()" id="sign">Register(↑)</el-button>
     </div>
 
+<!--
     <div class="footer">
       <el-button type="primary" style="width:120px" @click="facebookLogin()">
         <i class="fab fa-facebook-f" style="margin-right:10px"></i>
@@ -27,18 +28,18 @@
       @login="getUserData"
       @logout="onLogout"
       @get-initial-status="getUserData">
-    </facebook-login>
+    </facebook-login> -->
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-import facebookLogin from 'facebook-login-vuejs';
+// import facebookLogin from 'facebook-login-vuejs';
 export default {
   name: "Login",
-  components:{
-    facebookLogin
-  },
+  // components:{
+  //   facebookLogin
+  // },
   data() {
     return {
       name: "",
@@ -69,6 +70,8 @@ export default {
             message: "Login Successful",
             type: "success"
           });
+          // Nav guards to restrict routes
+          this.$store.commit("setAuthentication", true);
           this.$router.replace({ name: "home" });
         })
         .catch(e => {
@@ -112,45 +115,45 @@ export default {
         
       });
     },
-    facebookLogin(){
-      var provider = new firebase.auth.FacebookAuthProvider();
-      provider.addScope('user_birthday');
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-      var token = result.credential.accessToken;
-      var user = result.user;
-      this.$router.push('/')
-      console.log(token,user);
-      }).catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        var email = error.email;
-        var credential = error.credential;
-        console.log(errorMessage,errorCode,email,credential);
-      });
-    },
+    // facebookLogin(){
+    //   var provider = new firebase.auth.FacebookAuthProvider();
+    //   provider.addScope('user_birthday');
+    //   firebase.auth().signInWithPopup(provider).then(function(result) {
+    //   var token = result.credential.accessToken;
+    //   var user = result.user;
+    //   this.$router.push('/')
+    //   console.log(token,user);
+    //   }).catch(function(error) {
+    //     var errorCode = error.code;
+    //     var errorMessage = error.message;
+    //     var email = error.email;
+    //     var credential = error.credential;
+    //     console.log(errorMessage,errorCode,email,credential);
+    //   });
+    // },
 
-    getUserData(){
-      this.FB.api('/me', 'GET', {fields: 'id,name,email'},
-        userInformation =>{
-          console.warn("get data from fb", userInformation)
-          this.personalID = userInformation.id;
-          this.email = userInformation.email;
-          this.name = userInformation.name;
-        }
-      )
-    },
-    sdkLoaded(payload){
-      this.isConnected = payload.isConnected
-      this.FB =payload.FB
-      if(this.isConnected) this.getUserData()
-    },
-    onLogin(){
-      this.isConnected = true;
-      this.getUserData()
-    },
-    onLogout(){
-      this.isConnected = false;
-    }
+    // getUserData(){
+    //   this.FB.api('/me', 'GET', {fields: 'id,name,email'},
+    //     userInformation =>{
+    //       console.warn("get data from fb", userInformation)
+    //       this.personalID = userInformation.id;
+    //       this.email = userInformation.email;
+    //       this.name = userInformation.name;
+    //     }
+    //   )
+    // },
+    // sdkLoaded(payload){
+    //   this.isConnected = payload.isConnected
+    //   this.FB =payload.FB
+    //   if(this.isConnected) this.getUserData()
+    // },
+    // onLogin(){
+    //   this.isConnected = true;
+    //   this.getUserData()
+    // },
+    // onLogout(){
+    //   this.isConnected = false;
+    // }
   },
   created(){
     window.addEventListener("keydown", this.keydownClick)
@@ -159,6 +162,7 @@ export default {
 </script>
 
 <style>
+
 .dialog {
   position: fixed;
   top: 53.4%;
@@ -202,7 +206,7 @@ export default {
   width: 100%;
   height: 100%;
   /*background: url("./../assets/realmadrid.jpg") no-repeat; */
-  background-color: rgb(242, 242, 242);
+  background: linear-gradient(180deg, #8e0603d4, #000000f7), url('../assets/realmadrid.jpg');
   background-size: 100% 100%;
 }
 .login {
