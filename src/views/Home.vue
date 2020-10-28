@@ -19,7 +19,7 @@
                     <td>{{username.ph_no}}</td>
                     <td>{{username.address}}</td>
                     <td>
-                        <el-button style="height:25px;" type="primary" size="mini" @click="handleEdit( item)">Edit</el-button>
+                        <el-button style="height:25px;" type="primary" size="mini" @click="handleEdit(item)">Edit</el-button>
                         <el-button style="height:25px;" type="danger" size="mini" @click="handledelete(key)">Delete</el-button>                       
                     </td>
                 </tr>
@@ -33,14 +33,14 @@
                     </p>
                 </div>
                 <div class="col middle">
-                    <a href="#" class="first round">&#8249;&#8249;</a>
-                    <a href="#" class="previous round">&#8249;</a>
-                    <a href="#" class="round btn-page active">1</a>
-                    <a href="#" class="round btn-page">2</a>
-                    <a href="#" class="round btn-page">3</a>
-                    <a href="#" class="round btn-page">4</a>
-                    <a href="#" class="next round">&#8250;</a>
-                    <a href="#" class="last round">&#8250;&#8250;</a>
+                    <a href="#" class="first round" style="color:white">&#8249;&#8249;</a>
+                    <a href="#" class="previous round" style="color:white">&#8249;</a>
+                    <a href="#" class="round btn-page active" style="color:black">1</a>
+                    <a href="#" class="round btn-page" style="color:white">2</a>
+                    <a href="#" class="round btn-page" style="color:white">3</a>
+                    <a href="#" class="round btn-page" style="color:white">4</a>
+                    <a href="#" class="next round" style="color:white">&#8250;</a>
+                    <a href="#" class="last round" style="color:white">&#8250;&#8250;</a>
                 </div>
                 <div class="col last">
                     Show
@@ -113,7 +113,7 @@
     </div>
 </template>
 
-<script>
+<script> 
 import firebase from 'firebase'
 export default {
     name:'home',
@@ -188,7 +188,7 @@ export default {
                         console.log(data);
                         this.dialog =false;
                     }).catch(e=> {
-                        this.$message({
+                        this.$message({ 
                             type:'danger',
                             message:'Error for adding data'
                         })
@@ -202,7 +202,7 @@ export default {
         },
         reset(formName){
             this.$refs[formName].resetFields()
-        },
+        }, 
         handleEdit(item){
             this.editDialog =true;
             this.Edited = this.tableData.indexOf(item);
@@ -213,7 +213,7 @@ export default {
             this.editRuleForm.editPhone =this.Edited.ph_no;
             this.editRuleForm.editAddress =this.Edited.address
         },
-         save(key){
+         save(key){   
             firebase.database().ref("tableData/" + key).set({
                 roll_no: this.editRuleForm.editRoll,
                 name:this.editRuleForm.editName,
@@ -270,7 +270,7 @@ export default {
             //let self=this;
             firebase.database().ref("tableData").on('value',snapshot => {
                 this.tableData = snapshot.val();
-                return  this.tableData 
+                return  this.tableData; 
             });
             
             console.log("table=>>>", this.tableData);
@@ -286,7 +286,9 @@ export default {
 
 <style scoped>
 .cont{
-    position: relative;
+    position: fixed;
+    width: 100%;
+    height:100%
 }
 table, th{
     border-collapse: collapse;
@@ -297,10 +299,21 @@ table, th{
 th{
     width: 10%;
     height: 35px;
+    color: whitesmoke;
 }
 td {
  border: 1px solid gray; 
  height: 30px;  
+ color: white;
+}
+.pagination-label{
+    color: whitesmoke;
+}
+span{
+    color: whitesmoke;
+}
+.btn-page{
+    color: whitesmoke;
 }
 .main{
     border: 3px solid green;
@@ -308,7 +321,7 @@ td {
     margin:1%
 }
 .title{
-    margin-left:7%;
+    text-align: center;
     width: 85%;
     font-weight: 600;
     color: white;
@@ -363,6 +376,7 @@ td {
 .pagination .col.last{
     text-align: right;
     margin: 10px 0px;
+    color: whitesmoke;
 }
 .pagination p{
     margin: 15px 0px;
@@ -373,8 +387,12 @@ td {
     text-decoration: none;
     color: black;
 }
+.round{
+    color: whitesmoke !important;
+}
 .pagination a:hover, .pagination a.active{
     background-color: rgb(127, 227, 245);
+    color: black;
 }
 .pagination span{
     font-weight: bold;

@@ -14,7 +14,8 @@ import firebase from "firebase";
 export default {
     data() {
         return {
-            
+            reg_name:'',
+            reg_password:""
         }
     },
     methods:{
@@ -32,7 +33,7 @@ export default {
             .catch(e => {
                 this.$message({
                     message: e.message,
-                    type:'warning'
+                    type:'warning' 
                 });
             });
         },

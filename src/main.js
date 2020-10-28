@@ -14,8 +14,6 @@ Vue.use(Vuex);
 Vue.use(ElementUI);
 Vue.use(VueGoodTablePlugin);
 
-
-
 //connect firebase
 var firebaseConfig = {
   apiKey: "AIzaSyCbHgBmoFrO5PrEYr3pA6EHOxyfVFt_y4w",
@@ -47,6 +45,7 @@ const store = new Vuex.Store(
 
 new Vue({
   router,
-  store,
+  store:store,
   render: h => h(App)
 }).$mount('#app')
+

@@ -71,11 +71,12 @@ export default {
             type: "success"
           });
           // Nav guards to restrict routes
-          this.$store.commit("setAuthentication", true);
+          //this.$store.commit("setAuthentication", true);
           this.$router.replace({ name: "home" });
+         // this.$router.replace({ name: "home2" });
         })
         .catch(e => {
-          this.$message({
+          this.$message({      
             message: e.message,
             type:'warning'
           });
@@ -92,29 +93,29 @@ export default {
         this.login();
       }
     },
-    googleSign(){
-      var provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-      // firebase.auth().languageCode = 'pt';
-      // provider.setCustomParameters({
-      //   'login_hint': 'user@example.com'
-      // });
+    // googleSign(){
+    //   var provider = new firebase.auth.GoogleAuthProvider();
+    //   provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    //   // firebase.auth().languageCode = 'pt';
+    //   // provider.setCustomParameters({
+    //   //   'login_hint': 'user@example.com'
+    //   // });
 
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-        var token = result.credential.accessToken;
-        var user = result.user;
-        this.$router.push('/');
-        console.log(token,user);
+    //   firebase.auth().signInWithPopup(provider).then(function(result) {
+    //     var token = result.credential.accessToken;
+    //     var user = result.user;
+    //     this.$router.push('/');
+    //     console.log(token,user);
         
-      }).catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        var email = error.email;
-        var credential = error.credential;
-        console.log(errorMessage,errorCode,email,credential);
+    //   }).catch(function(error) {
+    //     var errorCode = error.code;
+    //     var errorMessage = error.message;
+    //     var email = error.email;
+    //     var credential = error.credential;
+    //     console.log(errorMessage,errorCode,email,credential);
         
-      });
-    },
+    //   });
+    // },
     // facebookLogin(){
     //   var provider = new firebase.auth.FacebookAuthProvider();
     //   provider.addScope('user_birthday');
